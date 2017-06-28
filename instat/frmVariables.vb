@@ -15,11 +15,15 @@
 ' along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Imports instat.Translations
 Imports unvell.ReoGrid.Events
+Imports System.Globalization
+Imports System.Threading
 
 Public Class frmVariables
     'Public context As New frmEditor
     Public WithEvents grdCurrSheet As unvell.ReoGrid.Worksheet
     Public strPreviousCellText As String
+    Private clsConvertTo As New RFunction
+    Public frmEditor As New frmEditor
 
     Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
         MyBase.OnFormClosing(e)
@@ -27,6 +31,10 @@ Public Class frmVariables
             e.Cancel = True
             Me.Hide()
         End If
+    End Sub
+
+    Private Sub RightClickFunction()
+        clsConvertTo.SetRCommand(frmMain.clsRLink.strInstatDataObject & "$convert_column_to_type")
     End Sub
 
     Private Sub frmVariables_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -51,6 +59,7 @@ Public Class frmVariables
         grdCurrSheet.SetSettings(unvell.ReoGrid.WorksheetSettings.Edit_Readonly, True)
         grdCurrSheet.SetSettings(unvell.ReoGrid.WorksheetSettings.Edit_DragSelectionToMoveCells, False)
         grdCurrSheet.SelectionForwardDirection = unvell.ReoGrid.SelectionForwardDirection.Down
+        grdVariables.RowHeaderContextMenuStrip = frmEditor.grdData.ColumnHeaderContextMenuStrip
     End Sub
 
     Private Sub grdCurrSheet_AfterCellEdit(sender As Object, e As CellAfterEditEventArgs) Handles grdCurrSheet.AfterCellEdit
@@ -117,5 +126,4 @@ Public Class frmVariables
     Private Sub grdCurrSheet_BeforeRangeMove(sender As Object, e As BeforeCopyOrMoveRangeEventArgs) Handles grdCurrSheet.BeforeRangeMove
         e.IsCancelled = True
     End Sub
-
 End Class
