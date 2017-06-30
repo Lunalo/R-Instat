@@ -33,13 +33,10 @@ Public Class frmVariables
         End If
     End Sub
 
-    Private Sub RightClickFunction()
-        clsConvertTo.SetRCommand(frmMain.clsRLink.strInstatDataObject & "$convert_column_to_type")
-    End Sub
-
     Private Sub frmVariables_Load(sender As Object, e As EventArgs) Handles Me.Load
         loadForm()
         frmMain.clsGrids.SetVariablesMetadata(grdVariables)
+        grdVariables.RowHeaderContextMenuStrip = frmMain.ucrDataViewer.grdData.ColumnHeaderContextMenuStrip
     End Sub
 
     Private Sub loadForm()
@@ -59,7 +56,6 @@ Public Class frmVariables
         grdCurrSheet.SetSettings(unvell.ReoGrid.WorksheetSettings.Edit_Readonly, True)
         grdCurrSheet.SetSettings(unvell.ReoGrid.WorksheetSettings.Edit_DragSelectionToMoveCells, False)
         grdCurrSheet.SelectionForwardDirection = unvell.ReoGrid.SelectionForwardDirection.Down
-        grdVariables.RowHeaderContextMenuStrip = frmEditor.grdData.ColumnHeaderContextMenuStrip
     End Sub
 
     Private Sub grdCurrSheet_AfterCellEdit(sender As Object, e As CellAfterEditEventArgs) Handles grdCurrSheet.AfterCellEdit
