@@ -19,7 +19,6 @@ Public Class dlgFitModel
     Public bFirstLoad As Boolean = True
     Private bReset As Boolean = True
     Public clsFormulaOperator As New ROperator
-
     Public clsRestpvalFunction, clsFamilyFunction, clsLM, clsConfint, clsAnovaFunction, clsSummaryFunction, clsFormulaFunction, clsRCIFunction, clsRConvert, clsAutoPlot, clsVisReg As New RFunction
     Public bResetModelOptions As Boolean = False
     Public bResetSubDialog As Boolean = False
@@ -42,14 +41,7 @@ Public Class dlgFitModel
     Private Sub InitialiseDialog()
         ucrBase.clsRsyntax.iCallType = 2
         ucrBase.clsRsyntax.bExcludeAssignedFunctionOutput = False
-
-        ucrModelName.SetDataFrameSelector(ucrSelectorByDataFrameAddRemoveForFitModel.ucrAvailableDataFrames)
-        ucrModelName.SetPrefix("gen_model")
-        ucrModelName.SetSaveTypeAsModel()
-        ucrModelName.SetCheckBoxText("Save Model:")
-        ucrModelName.SetIsComboBox()
-        ucrModelName.SetAssignToIfUncheckedValue("last_model")
-
+        ucrBase.iHelpTopicID = 371
 
         ucrSelectorByDataFrameAddRemoveForFitModel.SetParameter(New RParameter("data", 0))
         ucrSelectorByDataFrameAddRemoveForFitModel.SetParameterIsrfunction()
@@ -67,24 +59,19 @@ Public Class dlgFitModel
         ucrConvertToVariate.AddFunctionNamesCondition(True, "as.numeric")
         ucrConvertToVariate.SetText("Convert to Variate")
 
-        ucrBase.iHelpTopicID = 371
         ucrFamily.SetGLMDistributions()
         ucrFamily.SetFunctionIsDistFunction()
 
-    End Sub
-
-    Private Sub SetRCodeForControls(bReset As Boolean)
-        ucrReceiverResponseVar.SetRCode(clsRConvert, bReset)
-        ucrConvertToVariate.SetRCode(clsFormulaOperator, bReset)
-        ucrReceiverExpressionFitModel.SetRCode(clsFormulaOperator, bReset)
-        ucrSelectorByDataFrameAddRemoveForFitModel.SetRCode(clsLM, bReset)
-        ucrModelName.SetRCode(clsLM, bReset)
-        ucrFamily.SetRCode(clsFamilyFunction, bReset)
+        ucrModelName.SetDataFrameSelector(ucrSelectorByDataFrameAddRemoveForFitModel.ucrAvailableDataFrames)
+        ucrModelName.SetPrefix("gen_model")
+        ucrModelName.SetSaveTypeAsModel()
+        ucrModelName.SetCheckBoxText("Save Model:")
+        ucrModelName.SetIsComboBox()
+        ucrModelName.SetAssignToIfUncheckedValue("last_model")
     End Sub
 
     Private Sub SetDefaults()
         clsFormulaOperator = New ROperator
-
         ucrBase.clsRsyntax.ClearCodes()
         clsRCIFunction = New RFunction
         clsRConvert = New RFunction
@@ -172,12 +159,13 @@ Public Class dlgFitModel
         bResetModelOptions = True
     End Sub
 
-    Private Sub UpdatePreview()
-        If Not ucrReceiverResponseVar.IsEmpty AndAlso Not ucrReceiverExpressionFitModel.IsEmpty Then
-            ucrInputModelPreview.SetName(clsFormulaOperator.ToScript())
-        Else
-            ucrInputModelPreview.SetName("")
-        End If
+    Private Sub SetRCodeForControls(bReset As Boolean)
+        ucrReceiverResponseVar.SetRCode(clsRConvert, bReset)
+        ucrConvertToVariate.SetRCode(clsFormulaOperator, bReset)
+        ucrReceiverExpressionFitModel.SetRCode(clsFormulaOperator, bReset)
+        ucrSelectorByDataFrameAddRemoveForFitModel.SetRCode(clsLM, bReset)
+        ucrModelName.SetRCode(clsLM, bReset)
+        ucrFamily.SetRCode(clsFamilyFunction, bReset)
     End Sub
 
     Private Sub TestOKEnabled()
@@ -187,11 +175,6 @@ Public Class dlgFitModel
             ucrBase.OKEnabled(False)
         End If
     End Sub
-
-    'Private Sub ucrReceiverExpressionFitModel_SelectionChanged(sender As Object, e As EventArgs) Handles ucrReceiverExpressionFitModel.SelectionChanged
-    '    clsLM.AddParameter(strParameterValue:=ucrReceiverExpressionFitModel.GetVariableNames(False))
-    '    TestOKEnabled()
-    'End Sub
 
     Private Sub ucrBase_ClickReset(sender As Object, e As EventArgs) Handles ucrBase.ClickReset
         SetDefaults()
@@ -279,8 +262,20 @@ Public Class dlgFitModel
         sdgSimpleRegOptions.SetRCode(ucrBase.clsRsyntax, clsNewFormulaFunction:=clsFormulaFunction, clsNewAnovaFunction:=clsAnovaFunction, clsNewRSummaryFunction:=clsSummaryFunction, clsNewAutoplot:=clsAutoPlot, clsNewVisReg:=clsVisReg, clsNewConfint:=clsConfint, bReset:=bResetOptionsSubDialog)
         sdgSimpleRegOptions.ShowDialog()
         bResetOptionsSubDialog = False
-
     End Sub
+
+    Private Sub UpdatePreview()
+        If Not ucrReceiverResponseVar.IsEmpty AndAlso Not ucrReceiverExpressionFitModel.IsEmpty Then
+            ucrInputModelPreview.SetName(clsFormulaOperator.ToScript())
+        Else
+            ucrInputModelPreview.SetName("")
+        End If
+    End Sub
+
+    'Private Sub ucrReceiverExpressionFitModel_SelectionChanged(sender As Object, e As EventArgs) Handles ucrReceiverExpressionFitModel.SelectionChanged
+    '    clsLM.AddParameter(strParameterValue:=ucrReceiverExpressionFitModel.GetVariableNames(False))
+    '    TestOKEnabled()
+    'End Sub
 
     Public Sub ResponseConvert()
         If Not ucrReceiverResponseVar.IsEmpty Then
@@ -328,10 +323,6 @@ Public Class dlgFitModel
         ChooseRFunction()
     End Sub
 
-    Private Sub ucrReceiverResponseVar_ControlContentsChanged(ucrChangedControl As ucrCore) Handles ucrReceiverResponseVar.ControlContentsChanged
-        TestOKEnabled()
-    End Sub
-
     Private Sub ucrReceiverExpressionFitModel_ControlValueChanged(ucrChangedControl As ucrCore) Handles ucrReceiverExpressionFitModel.ControlValueChanged, ucrReceiverResponseVar.ControlValueChanged
         ResponseConvert()
     End Sub
@@ -343,6 +334,10 @@ Public Class dlgFitModel
 
     Private Sub ucrReceiverExpressionFitModel_ControlContentsChanged(ucrChangedControl As ucrCore) Handles ucrReceiverExpressionFitModel.ControlContentsChanged, ucrReceiverResponseVar.ControlContentsChanged
         UpdatePreview()
+        TestOKEnabled()
+    End Sub
+
+    Private Sub ucrReceiverResponseVar_ControlContentsChanged(ucrChangedControl As ucrCore) Handles ucrReceiverResponseVar.ControlContentsChanged
         TestOKEnabled()
     End Sub
 End Class
