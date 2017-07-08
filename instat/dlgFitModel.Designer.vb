@@ -384,7 +384,7 @@ Partial Class dlgFitModel
         Me.ucrConvertToVariate.Checked = False
         Me.ucrConvertToVariate.Location = New System.Drawing.Point(378, 60)
         Me.ucrConvertToVariate.Name = "ucrConvertToVariate"
-        Me.ucrConvertToVariate.Size = New System.Drawing.Size(100, 20)
+        Me.ucrConvertToVariate.Size = New System.Drawing.Size(129, 20)
         Me.ucrConvertToVariate.TabIndex = 3
         '
         'ucrModelName

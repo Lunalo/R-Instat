@@ -65,7 +65,7 @@ Public Class dlgFitModel
         ucrModelName.SetDataFrameSelector(ucrSelectorByDataFrameAddRemoveForFitModel.ucrAvailableDataFrames)
         ucrModelName.SetPrefix("gen_model")
         ucrModelName.SetSaveTypeAsModel()
-        ucrModelName.SetCheckBoxText("Save Model:")
+        ucrModelName.SetCheckBoxText("Save Model")
         ucrModelName.SetIsComboBox()
         ucrModelName.SetAssignToIfUncheckedValue("last_model")
     End Sub
