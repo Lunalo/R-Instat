@@ -68,7 +68,7 @@ Partial Class dlgFitModel
         Me.ucrReceiverResponseVar = New instat.ucrReceiverSingle()
         Me.ucrSelectorByDataFrameAddRemoveForFitModel = New instat.ucrSelectorByDataFrameAddRemove()
         Me.ucrBase = New instat.ucrButtons()
-        Me.ucrConvertToVariate = New instat.ucrCheck()
+        Me.ucrChkConvertToVariate = New instat.ucrCheck()
         Me.ucrModelName = New instat.ucrSave()
         Me.grpFirstCalc.SuspendLayout()
         Me.grpSecondCalc.SuspendLayout()
@@ -379,13 +379,13 @@ Partial Class dlgFitModel
         Me.ucrBase.Size = New System.Drawing.Size(410, 52)
         Me.ucrBase.TabIndex = 14
         '
-        'ucrConvertToVariate
+        'ucrChkConvertToVariate
         '
-        Me.ucrConvertToVariate.Checked = False
-        Me.ucrConvertToVariate.Location = New System.Drawing.Point(378, 60)
-        Me.ucrConvertToVariate.Name = "ucrConvertToVariate"
-        Me.ucrConvertToVariate.Size = New System.Drawing.Size(129, 20)
-        Me.ucrConvertToVariate.TabIndex = 3
+        Me.ucrChkConvertToVariate.Checked = False
+        Me.ucrChkConvertToVariate.Location = New System.Drawing.Point(378, 60)
+        Me.ucrChkConvertToVariate.Name = "ucrChkConvertToVariate"
+        Me.ucrChkConvertToVariate.Size = New System.Drawing.Size(129, 20)
+        Me.ucrChkConvertToVariate.TabIndex = 3
         '
         'ucrModelName
         '
@@ -400,7 +400,7 @@ Partial Class dlgFitModel
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(510, 357)
         Me.Controls.Add(Me.ucrModelName)
-        Me.Controls.Add(Me.ucrConvertToVariate)
+        Me.Controls.Add(Me.ucrChkConvertToVariate)
         Me.Controls.Add(Me.grpSecondCalc)
         Me.Controls.Add(Me.grpFirstCalc)
         Me.Controls.Add(Me.ucrReceiverExpressionFitModel)
@@ -458,6 +458,6 @@ Partial Class dlgFitModel
     Friend WithEvents cmdTan As Button
     Friend WithEvents cmdExp As Button
     Friend WithEvents cmdPower As Button
-    Friend WithEvents ucrConvertToVariate As ucrCheck
+    Friend WithEvents ucrChkConvertToVariate As ucrCheck
     Friend WithEvents ucrModelName As ucrSave
 End Class

@@ -49,15 +49,15 @@ Public Class dlgFitModel
         ucrReceiverResponseVar.SetParameter(New RParameter("x", 0))
         ucrReceiverResponseVar.SetParameterIsRFunction()
 
-        ucrConvertToVariate.AddParameterIsRFunctionCondition(True, "x", True)
-        ucrConvertToVariate.AddParameterIsRFunctionCondition(False, "x", False)
+        ucrChkConvertToVariate.SetText("Convert to Variate")
+        ucrChkConvertToVariate.AddParameterIsRFunctionCondition(True, "x", True)
+        ucrChkConvertToVariate.AddParameterIsRFunctionCondition(False, "x", False)
+        'ucrChkConvertToVariate.AddFunctionNamesCondition(True, "as.numeric")
+        'ucrChkConvertToVariate.AddFunctionNamesCondition(False, "as.numeric", False)
 
         ucrReceiverExpressionFitModel.SetParameter(New RParameter("y", 1))
         ucrReceiverExpressionFitModel.SetParameterIsString()
         ucrReceiverExpressionFitModel.bWithQuotes = False
-
-        ucrConvertToVariate.AddFunctionNamesCondition(True, "as.numeric")
-        ucrConvertToVariate.SetText("Convert to Variate")
 
         ucrFamily.SetGLMDistributions()
         ucrFamily.SetFunctionIsDistFunction()
@@ -142,8 +142,8 @@ Public Class dlgFitModel
         sdgSimpleRegOptions.SetRDataFrame(ucrSelectorByDataFrameAddRemoveForFitModel.ucrAvailableDataFrames)
 
         ResponseConvert()
-
         ChooseRFunction()
+
         ' sdgSimpleRegOptions.chkDisplayCLimits.Enabled = True
         sdgSimpleRegOptions.lblConfLevel.Enabled = True
         'sdgSimpleRegOptions.nudDisplayCLevel.Enabled = True
@@ -161,7 +161,7 @@ Public Class dlgFitModel
 
     Private Sub SetRCodeForControls(bReset As Boolean)
         ucrReceiverResponseVar.SetRCode(clsRConvert, bReset)
-        ucrConvertToVariate.SetRCode(clsFormulaOperator, bReset)
+        ucrChkConvertToVariate.SetRCode(clsFormulaOperator, bReset)
         ucrReceiverExpressionFitModel.SetRCode(clsFormulaOperator, bReset)
         ucrSelectorByDataFrameAddRemoveForFitModel.SetRCode(clsLM, bReset)
         ucrModelName.SetRCode(clsLM, bReset)
@@ -282,13 +282,13 @@ Public Class dlgFitModel
             ucrFamily.RecieverDatatype(ucrSelectorByDataFrameAddRemoveForFitModel.ucrAvailableDataFrames.cboAvailableDataFrames.Text, ucrReceiverResponseVar.GetVariableNames(bWithQuotes:=False))
 
             If ucrFamily.strDataType = "numeric" Then
-                ucrConvertToVariate.Checked = False
-                ucrConvertToVariate.Visible = False
+                ucrChkConvertToVariate.Checked = False
+                ucrChkConvertToVariate.Visible = False
             Else
-                ucrConvertToVariate.Visible = True
+                ucrChkConvertToVariate.Visible = True
             End If
 
-            If ucrConvertToVariate.Checked Then
+            If ucrChkConvertToVariate.Checked Then
                 ' clsRConvert.AddParameter("x", ucrReceiverResponseVar.GetVariableNames(bWithQuotes:=False))
                 clsFormulaOperator.AddParameter("x", clsRFunctionParameter:=clsRConvert, iPosition:=0)
                 ucrFamily.RecieverDatatype("numeric")
@@ -296,17 +296,19 @@ Public Class dlgFitModel
                 clsFormulaOperator.AddParameter("x", strParameterValue:=ucrReceiverResponseVar.GetVariableNames(bWithQuotes:=False), iPosition:=0)
                 ucrFamily.RecieverDatatype(ucrSelectorByDataFrameAddRemoveForFitModel.ucrAvailableDataFrames.cboAvailableDataFrames.Text, ucrReceiverResponseVar.GetVariableNames(bWithQuotes:=False))
             End If
-            sdgModelOptions.ucrDistributionChoice.RecieverDatatype(ucrFamily.strDataType)
+            '            sdgModelOptions.ucrDistributionChoice.RecieverDatatype(ucrFamily.strDataType)
         End If
 
-        If ucrFamily.lstCurrentDistributions.Count = 0 Or ucrReceiverResponseVar.IsEmpty() Then
+        If ucrFamily.lstCurrentDistributions.Count = 0 OrElse ucrReceiverResponseVar.IsEmpty() Then
             ucrFamily.Enabled = False
             ucrFamily.ucrInputDistributions.SetName("")
             cmdModelOptions.Enabled = False
         Else
             ucrFamily.Enabled = True
             cmdModelOptions.Enabled = True
+            'ucrDistributionChoice.Enabled = True
         End If
+        UpdatePreview()
     End Sub
 
     Public Sub ChooseRFunction()
@@ -321,15 +323,15 @@ Public Class dlgFitModel
 
     Public Sub ucrFamily_cboDistributionsIndexChanged() Handles ucrFamily.ControlValueChanged
         ChooseRFunction()
+        ResponseConvert()
     End Sub
 
     Private Sub ucrReceiverExpressionFitModel_ControlValueChanged(ucrChangedControl As ucrCore) Handles ucrReceiverExpressionFitModel.ControlValueChanged, ucrReceiverResponseVar.ControlValueChanged
         ResponseConvert()
     End Sub
 
-    Private Sub ucrConvertToVariate_ControlValueChanged(ucrChangedControl As ucrCore) Handles ucrConvertToVariate.ControlValueChanged
+    Private Sub ucrConvertToVariate_ControlValueChanged(ucrChangedControl As ucrCore) Handles ucrChkConvertToVariate.ControlValueChanged
         ResponseConvert()
-        TestOKEnabled()
     End Sub
 
     Private Sub ucrReceiverExpressionFitModel_ControlContentsChanged(ucrChangedControl As ucrCore) Handles ucrReceiverExpressionFitModel.ControlContentsChanged, ucrReceiverResponseVar.ControlContentsChanged
@@ -337,7 +339,7 @@ Public Class dlgFitModel
         TestOKEnabled()
     End Sub
 
-    Private Sub ucrReceiverResponseVar_ControlContentsChanged(ucrChangedControl As ucrCore) Handles ucrReceiverResponseVar.ControlContentsChanged
+    Private Sub ucrFamily_ControlContentsChanged(ucrChangedControl As ucrCore) Handles ucrFamily.ControlContentsChanged
         TestOKEnabled()
     End Sub
 End Class

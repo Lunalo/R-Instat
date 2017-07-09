@@ -57,9 +57,8 @@ Public Class dlgColumnStructure
         ucrReceiverMeasurement.bExcludeFromSelector = True
 
         ucrChkColourColumnsByStructure.SetText("Colour Columns by Structure")
-        ucrChkColourColumnsByStructure.AddFunctionNamesCondition(True, frmMain.clsRLink.strInstatDataObject & "$set_column_colours_by_metadata")
+        ucrChkColourColumnsByStructure.AddFunctionNamesCondition(True, {frmMain.clsRLink.strInstatDataObject & "$set_column_colours_by_metadata", frmMain.clsRLink.strInstatDataObject & "$remove_column_colours"})
         ucrChkColourColumnsByStructure.AddFunctionNamesCondition(False, frmMain.clsRLink.strInstatDataObject & "$remove_column_colours")
-        ucrChkColourColumnsByStructure.AddFunctionNamesCondition(True, frmMain.clsRLink.strInstatDataObject & "$remove_column_colours")
     End Sub
 
     Private Sub SetDefaults()
@@ -89,7 +88,7 @@ Public Class dlgColumnStructure
         ucrReceiverLayout.SetRCode(clsColumnStructure, bReset)
         ucrReceiverTreatment.SetRCode(clsColumnStructure, bReset)
         ucrReceiverMeasurement.SetRCode(clsColumnStructure, bReset)
-        ucrChkColourColumnsByStructure.SetRCode(clsUncolourByMetadata, bReset)
+        ucrChkColourColumnsByStructure.SetRCode(clsColourByMetadata, bReset)
     End Sub
 
     Private Sub TestOKEnabled()
